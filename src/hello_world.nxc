@@ -24,7 +24,7 @@ mutex move_mutex;
 
 task ff7()
 {
-  Wait(4000);
+//  Wait(4000);
 //  while (true)
 //  {
     PlayToneEx(E,TRIPLET_NOTE_DURATION,VOL,FALSE);
@@ -67,29 +67,41 @@ task ff7()
 //  }
 }
 
-// go straight for 1/2 second
+// go straight for 1/4 second
 sub fullSpeedAhead()
 {
   OnFwd(WHEELS, 100);
-  Wait(500);
+  Wait(250);
 }
 
-// spin in place for 1/2 second
-sub spinLeftABit()
+// go backwards for 1/4 second
+sub fullSpeedBackward()
 {
-  OnFwd(WHEEL_L, 100);
-  OnRev(WHEEL_R, 100);
-  Wait(500);
+  OnRev(WHEELS, 100);
+  Wait(250);
+}
+
+// spin in place for 1/4 second
+sub spinRightABit()
+{
+  OnFwd(WHEEL_R, 100);
+  OnRev(WHEEL_L, 100);
+  Wait(250);
 }
 
 // move forward full speed
 sub sumo()
 {
   while (true) {
+    while (SENSOR_1 == 1)
+    {
+      // somone got behind us and is pushing us.  FIGHT BACK
+      fullSpeedBackward();
+    }
     while (SensorUS(IN_4) > SONAR_THRESHOLD)
     {
       // if we are not directly in front of opponent
-      spinLeftABit();
+      spinRightABit();
     }
     fullSpeedAhead();
   }
@@ -105,8 +117,8 @@ task turnAround()
 
 task main()
 {
-  //Precedes(turnAround, ff7);
   Precedes(turnAround);
   // Set any sensors here
   SetSensorLowspeed(IN_4);
+  SetSensorTouch(IN_1);
 }
