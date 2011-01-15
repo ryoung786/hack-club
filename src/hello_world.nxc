@@ -118,6 +118,7 @@ task turnAround()
 task main()
 {
   Precedes(turnAround);
+  PlayFileEx("11 - Victory Fa.rso",7,FALSE);
   // Set any sensors here
   SetSensorLowspeed(IN_4);
   SetSensorTouch(IN_1);

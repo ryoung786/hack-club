@@ -1,0 +1,5 @@
+task main()
+{
+  PlayFileEx("11 - Victory Fa.rso",7,FALSE);
+  Wait(5000);
+}
