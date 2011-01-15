@@ -17,15 +17,9 @@
 
 mutex move_mutex;
 
-task main()
-{
-  Precedes(turnAround, ff7);
-  // Set any sensors here
-}
-
 task ff7()
 {
-  WAIT(4000);
+  Wait(4000);
 //  while (true)
 //  {
     PlayToneEx(E,TRIPLET_NOTE_DURATION,VOL,FALSE);
@@ -68,6 +62,13 @@ task ff7()
 //  }
 }
 
+sub sumo()
+{
+  Acquire(move_mutex);
+  Wait(4000);
+  Off(WHEELS);
+  Release(move_mutex);
+}
 
 task turnAround()
 {
@@ -79,10 +80,8 @@ task turnAround()
   sumo();
 }
 
-sub sumo()
+task main()
 {
-  Acquire(move_mutex);
-  Wait(4000);
-  Off(WHEELS);
-  Release(move_mutex);
+  Precedes(turnAround, ff7);
+  // Set any sensors here
 }
