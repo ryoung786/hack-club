@@ -1,9 +1,12 @@
+#define WHEEL_L    OUT_A
+#define WHEEL_R    OUT_C
+#define WHEELS     OUT_AC
+
 task main()
 {
-  OnFwd(OUT_A, 75);
-  OnFwd(OUT_C, 75);
+  OnFwd(WHEELS, 75);
   Wait(4000);
-  OnRev(OUT_AC, 75);
+  OnRev(WHEELS, 75);
   Wait(4000);
-  Off(OUT_AC);
+  Off(WHEELS);
 }
