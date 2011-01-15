@@ -17,7 +17,7 @@
 #define WHEEL_R    OUT_C
 #define WHEELS     OUT_AC
 
-#define SONAR_THRESHOLD  40 // in centimeters
+#define SONAR_THRESHOLD  80 // in centimeters
 
 // global vars
 mutex move_mutex;
@@ -99,7 +99,7 @@ task turnAround()
 {
   OnFwd(WHEEL_L, 100);
   OnRev(WHEEL_R, 100);
-  Wait(4000);
+  Wait(1700);
   sumo();
 }
 
