@@ -1,3 +1,4 @@
+// music consts
 #define VOL 3
 #define D_FLAT 277
 #define E_FLAT 311
@@ -11,10 +12,14 @@
 #define QUARTER_NOTE_DURATION 400
 #define QUARTER_DURATION 500
 
+// real consts
 #define WHEEL_L    OUT_A
 #define WHEEL_R    OUT_C
 #define WHEELS     OUT_AC
 
+#define SONAR_THRESHOLD  40 // in centimeters
+
+// global vars
 mutex move_mutex;
 
 task ff7()
@@ -62,26 +67,46 @@ task ff7()
 //  }
 }
 
+// go straight for 1/2 second
+sub fullSpeedAhead()
+{
+  OnFwd(WHEELS, 100);
+  Wait(500);
+}
+
+// spin in place for 1/2 second
+sub spinLeftABit()
+{
+  OnFwd(WHEEL_L, 100);
+  OnRev(WHEEL_R, 100);
+  Wait(500);
+}
+
+// move forward full speed
 sub sumo()
 {
-  Acquire(move_mutex);
-  Wait(4000);
-  Off(WHEELS);
-  Release(move_mutex);
+  while (true) {
+    while (SensorUS(IN_4) > SONAR_THRESHOLD)
+    {
+      // if we are not directly in front of opponent
+      spinLeftABit();
+    }
+    fullSpeedAhead();
+  }
 }
 
 task turnAround()
 {
-  Acquire(move_mutex);
   OnFwd(WHEEL_L, 100);
   OnRev(WHEEL_R, 100);
   Wait(4000);
-  Release(move_mutex);
   sumo();
 }
 
 task main()
 {
-  Precedes(turnAround, ff7);
+  //Precedes(turnAround, ff7);
+  Precedes(turnAround);
   // Set any sensors here
+  SetSensorLowspeed(IN_4);
 }
