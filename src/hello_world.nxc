@@ -93,7 +93,7 @@ sub spinRightABit()
 sub sumo()
 {
   while (true) {
-    while (SENSOR_1 == 1)
+    while (SENSOR_1 == 1 || SENSOR_2 == 1)
     {
       // somone got behind us and is pushing us.  FIGHT BACK
       fullSpeedBackward();
@@ -121,4 +121,5 @@ task main()
   // Set any sensors here
   SetSensorLowspeed(IN_4);
   SetSensorTouch(IN_1);
+  SetSensorTouch(IN_2);
 }
