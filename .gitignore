@@ -1,2 +1,5 @@
-
+# the nbc garbage file or whatever
 *.iml
+
+# emacs backup files
+*#*

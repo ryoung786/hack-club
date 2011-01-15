@@ -1,12 +1,88 @@
+#define VOL 3
+#define D_FLAT 277
+#define E_FLAT 311
+#define E 330
+#define F 349
+#define A_FLAT 415
+#define B_FLAT 466
+#define C_5 523
+#define TRIPLET_NOTE_DURATION 150
+#define TRIPLET_DURATION 167
+#define QUARTER_NOTE_DURATION 400
+#define QUARTER_DURATION 500
+
 #define WHEEL_L    OUT_A
 #define WHEEL_R    OUT_C
 #define WHEELS     OUT_AC
 
+mutex move_mutex;
+
 task main()
 {
-  OnFwd(WHEELS, 75);
+  Precedes(turnAround, ff7);
+  // Set any sensors here
+}
+
+task ff7()
+{
+  WAIT(4000);
+//  while (true)
+//  {
+    PlayToneEx(E,TRIPLET_NOTE_DURATION,VOL,FALSE);
+    PlayToneEx(C_5,TRIPLET_NOTE_DURATION,VOL,FALSE);
+    Wait(TRIPLET_DURATION);
+
+    PlayToneEx(E,TRIPLET_NOTE_DURATION,VOL,FALSE);
+    PlayToneEx(C_5,TRIPLET_NOTE_DURATION,VOL,FALSE);
+    Wait(TRIPLET_DURATION);
+  
+    PlayToneEx(E,TRIPLET_NOTE_DURATION,VOL,FALSE);
+    PlayToneEx(C_5,TRIPLET_NOTE_DURATION,VOL,FALSE);
+    Wait(TRIPLET_DURATION);
+  
+    PlayToneEx(E,QUARTER_NOTE_DURATION,VOL,FALSE);
+    PlayToneEx(C_5,QUARTER_NOTE_DURATION,VOL,FALSE);
+    Wait(QUARTER_DURATION);
+  
+    PlayToneEx(D_FLAT,QUARTER_NOTE_DURATION,VOL,FALSE);
+    PlayToneEx(A_FLAT,QUARTER_NOTE_DURATION,VOL,FALSE);
+    Wait(QUARTER_DURATION);
+  
+    PlayToneEx(B_FLAT,QUARTER_NOTE_DURATION,VOL,FALSE);
+    PlayToneEx(E_FLAT,QUARTER_NOTE_DURATION,VOL,FALSE);
+    Wait(QUARTER_DURATION);
+  
+    PlayToneEx(F,TRIPLET_NOTE_DURATION,VOL,FALSE);
+    PlayToneEx(C_5,TRIPLET_NOTE_DURATION,VOL,FALSE);
+    Wait(TRIPLET_DURATION);
+  
+    Wait(TRIPLET_DURATION);
+  
+    PlayToneEx(B_FLAT,TRIPLET_NOTE_DURATION,VOL,FALSE);
+    PlayToneEx(E_FLAT,TRIPLET_NOTE_DURATION,VOL,FALSE);
+    Wait(TRIPLET_DURATION);
+  
+    PlayToneEx(F,3*QUARTER_NOTE_DURATION,VOL,FALSE);
+    PlayToneEx(C_5,3*QUARTER_NOTE_DURATION,VOL,FALSE);
+    Wait(3*QUARTER_DURATION);
+//  }
+}
+
+
+task turnAround()
+{
+  Acquire(move_mutex);
+  OnFwd(WHEEL_L, 100);
+  OnRev(WHEEL_R, 100);
   Wait(4000);
-  OnRev(WHEELS, 75);
+  Release(move_mutex);
+  sumo();
+}
+
+sub sumo()
+{
+  Acquire(move_mutex);
   Wait(4000);
   Off(WHEELS);
+  Release(move_mutex);
 }
